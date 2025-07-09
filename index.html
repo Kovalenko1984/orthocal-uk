@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Православний календар (українською)</title>
+</head>
+<body>
+  <h1>Сьогоднішні свята</h1>
+  <div id="calendar">Завантаження...</div>
+  <script>
+    fetch("https://your-service.onrender.com/api/v1/calendar?locale=uk")
+      .then(response => response.json())
+      .then(data => {
+        document.getElementById("calendar").innerText =
+          "Піст: " + data.fast + "\nСвяті: " + data.saints.join(", ");
+      });
+  </script>
+</body>
+</html>

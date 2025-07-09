@@ -1,0 +1,12 @@
+uk:
+  calendar:
+    fast_free: "немає посту"
+    great_lent: "Великий піст"
+    apostles_fast: "Петрів піст"
+    dormition_fast: "Успенський піст"
+    nativity_fast: "Різдвяний піст"
+    readings:
+      epistle: "Апостол"
+      gospel: "Євангеліє"
+    saints:
+      pancratius: "Священномученик Панкра́тій, єпископ Таормінський"
