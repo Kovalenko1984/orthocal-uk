@@ -2,8 +2,10 @@ require 'sinatra'
 require 'json'
 require 'rack/protection'
 
-# Дозволити запити лише з дозволеного хоста (Render)
-use Rack::Protection::HostAuthorization, hosts: ['orthocal-uk.onrender.com']
+# Дозволити доступ лише з onrender.com або localhost
+use Rack::Protection::HostAuthorization, hosts: lambda { |host|
+  host.end_with?('.onrender.com') || host == 'localhost'
+}
 
 # Налаштування Sinatra
 set :bind, '0.0.0.0'
@@ -18,19 +20,17 @@ get '/' do
   }.to_json
 end
 
-# Ендпоінт для календаря
+# Ендпоінт календаря
 get '/api/calendar' do
   content_type :json
 
   month = params['month']&.to_i
   year = params['year']&.to_i
 
-  # Перевірка параметрів
   unless month && year && month.between?(1, 12) && year > 0
-    halt 400, { error: 'Invalid parameters. Provide ?month=7&year=2025' }.to_json
+    halt 400, { error: 'Invalid parameters. Use ?month=7&year=2025' }.to_json
   end
 
-  # Тимчасово — повертаємо заглушку (можеш тут підключити справжні дані)
   {
     year: year,
     month: month,
