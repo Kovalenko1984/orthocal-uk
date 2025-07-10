@@ -1,22 +1,38 @@
 require 'sinatra'
 require 'json'
-require 'date'
+require 'rack/protection'
 
-set :port, 3000
+# Обмеження доступу тільки з дозволених хостів (наприклад, Render)
+use Rack::Protection::HostAuthorization, hosts: ['orthocal-uk.onrender.com']
+
 set :bind, '0.0.0.0'
+set :port, 3000
 
-get '/api/v1/calendar' do
+get '/' do
   content_type :json
-  date = params['date'] || Date.today.to_s
-  locale = params['locale'] || 'uk'
+  {
+    status: "Orthodox Calendar API is working",
+    hint: "Use /api/calendar?month=7&year=2025"
+  }.to_json
+end
+
+get '/api/calendar' do
+  content_type :json
+
+  # Параметри запиту
+  month = params['month']&.to_i || Time.now.month
+  year  = params['year']&.to_i || Time.now.year
+
+  # Тестові дані — тут у майбутньому можна підключити API, базу чи скрейпер
+  calendar = [
+    { date: "#{year}-#{month}-01", feast: "Св. муч. Юстина", type: "commemoration" },
+    { date: "#{year}-#{month}-07", feast: "Різдво св. Івана Предтечі", type: "great feast" },
+    { date: "#{year}-#{month}-12", feast: "Ап. Петра і Павла", type: "great feast" }
+  ]
 
   {
-    date: date,
-    fast: "немає посту",
-    saints: ["Священномученик Панкра́тій, єпископ Таормінський"],
-    readings: [
-      { title: "Апостол: Рим. 11:2-12" },
-      { title: "Євангеліє: Мт. 11:20-26" }
-    ]
+    month: month,
+    year: year,
+    entries: calendar
   }.to_json
 end
