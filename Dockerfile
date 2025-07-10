@@ -1,9 +1,9 @@
-FROM ruby:3.2
+FROM ruby:3.1
 
 WORKDIR /app
-COPY . .
+COPY . /app
 
-RUN gem install bundler && bundle install
+RUN bundle install
 
 EXPOSE 3000
 
