@@ -3,7 +3,7 @@ require 'json'
 require 'rack/protection'
 
 # Дозволити запити лише з піддоменів *.onrender.com
-use Rack::Protection::HostAuthorization, hosts: lambda { |host| host.end_with?('.onrender.com') }
+use Rack::Protection::HostAuthorization, hosts: lambda { |host| host.end_with?('.onrender.com') || host == 'localhost' }
 
 # Налаштування Sinatra
 set :bind, '0.0.0.0'
